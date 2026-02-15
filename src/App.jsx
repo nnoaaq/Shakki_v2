@@ -482,9 +482,11 @@ function App() {
       <div className="board-wrapper">
         <div className="eaten">
           {eatenWhites &&
-            eatenWhites.map((piece, pieceIndex) => (
-              <img key={pieceIndex} src={`${piece}.webp`} alt="" />
-            ))}
+            eatenWhites.map(
+              (piece, pieceIndex) =>
+                piece !==
+                ""(<img key={pieceIndex} src={`${piece}.webp`} alt="" />),
+            )}
         </div>
         <div id="board">
           {chessBoard.map((row, rowIndex) =>
@@ -520,9 +522,11 @@ function App() {
         </div>
         <div className="eaten">
           {eatenBlacks &&
-            eatenBlacks.map((piece, pieceIndex) => (
-              <img key={pieceIndex} src={`${piece}.webp`} alt="" />
-            ))}
+            eatenBlacks.map(
+              (piece, pieceIndex) =>
+                piece !==
+                ""(<img key={pieceIndex} src={`${piece}.webp`} alt="" />),
+            )}
         </div>
       </div>
 
