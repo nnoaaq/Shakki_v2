@@ -484,8 +484,7 @@ function App() {
           {eatenWhites &&
             eatenWhites.map(
               (piece, pieceIndex) =>
-                piece !==
-                ""(<img key={pieceIndex} src={`${piece}.webp`} alt="" />),
+                piece && <img key={pieceIndex} src={`${piece}.webp`} alt="" />,
             )}
         </div>
         <div id="board">
@@ -514,7 +513,7 @@ function App() {
                             : "#ffff",
                   }}
                 >
-                  {col && <img src={`${col}.webp`} alt="" />}
+                  {col && <img src={`${col}.webp`} alt="kuva" />}
                 </div>
               );
             }),
@@ -524,8 +523,7 @@ function App() {
           {eatenBlacks &&
             eatenBlacks.map(
               (piece, pieceIndex) =>
-                piece !==
-                ""(<img key={pieceIndex} src={`${piece}.webp`} alt="" />),
+                piece && <img key={pieceIndex} src={`${piece}.webp`} alt="" />,
             )}
         </div>
       </div>
