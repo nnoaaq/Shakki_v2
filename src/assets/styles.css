@@ -8,8 +8,8 @@
 #board {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  width: 850px;
   border: 1px solid black;
+  width: 100%;
 }
 #board div {
   display: flex;
@@ -19,12 +19,17 @@
 }
 #board div img {
   pointer-events: none;
+  max-width: 100%;
+  height: auto;
 }
 .turn {
   height: 20px;
 }
 .board-wrapper {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px;
 }
 
 .eaten {
