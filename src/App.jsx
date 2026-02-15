@@ -61,7 +61,49 @@ function App() {
   const handleOpen = () => setShowWinnerModal(true);
   const [eatenWhites, setEatenWhites] = useState([]);
   const [eatenBlacks, setEatenBlacks] = useState([]);
+  const [selectPiece, setSelectPiece] = useState(false);
+  const [possiblePieces, setPossiblePieces] = useState([]);
+  const closeSelect = () => setSelectPiece(false);
+  const openSelect = () => setSelectPiece(true);
+  function replacePiece(newPiece, tile, oldPiece) {
+    setChessBoard((prev) => {
+      const updatedBoard = prev.map((row) => [...row]);
+      updatedBoard[tile.row][tile.col] = newPiece;
+      return updatedBoard;
+    });
+    if (oldPiece.includes("black")) {
+      setEatenBlacks((prev) => prev.filter((piece) => piece !== newPiece));
+      setEatenBlacks((prev) => [...prev, oldPiece]);
+      setPossiblePieces([]);
+      closeSelect();
+    }
+    if (oldPiece.includes("white")) {
+      setEatenWhites((prev) => prev.filter((piece) => piece !== newPiece));
+      setEatenWhites((prev) => [...prev, oldPiece]);
+      setPossiblePieces([]);
+      closeSelect();
+    }
+  }
   function movePiece(from, to) {
+    const movingPiece = chessBoard[from.row][from.col] || null;
+    if (movingPiece.includes("white_pawn") && to.row === 0) {
+      eatenWhites.map((piece) => {
+        setPossiblePieces((prev) => [
+          ...prev,
+          { name: piece, tile: to, eatingPiece: movingPiece },
+        ]);
+      });
+      openSelect();
+    }
+    if (movingPiece.includes("black_pawn") && to.row === 7) {
+      eatenBlacks.map((piece) => {
+        setPossiblePieces((prev) => [
+          ...prev,
+          { name: piece, tile: to, eatingPiece: movingPiece },
+        ]);
+      });
+      openSelect();
+    }
     const eatenPiece = chessBoard[to.row][to.col] || null;
     if (eatenPiece?.includes("king")) {
       isWhite(to) ? setWinner("Musta") : setWinner("Valkoinen");
@@ -382,8 +424,34 @@ function App() {
     boxShadow: 24,
     p: 4,
   };
+
   return (
     <>
+      <Modal
+        open={selectPiece}
+        onClose={closeSelect}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Valitse sotilaan tilalle nappula!
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {possiblePieces &&
+              possiblePieces.map((piece, pieceIndex) => (
+                <img
+                  key={pieceIndex}
+                  onClick={() =>
+                    replacePiece(piece.name, piece.tile, piece.eatingPiece)
+                  }
+                  src={`${piece.name}.webp`}
+                  alt=""
+                ></img>
+              ))}
+          </Typography>
+        </Box>
+      </Modal>
       <Modal
         open={showWinnerModal}
         onClose={handleClose}
@@ -453,7 +521,7 @@ function App() {
         <div className="eaten">
           {eatenBlacks &&
             eatenBlacks.map((piece, pieceIndex) => (
-              <img key={pieceIndex} src={`${piece}.webp`} />
+              <img key={pieceIndex} src={`${piece}.webp`} alt="" />
             ))}
         </div>
       </div>
