@@ -444,7 +444,7 @@ function App() {
                             : "#ffff",
                   }}
                 >
-                  <img src={`${col}.webp`} alt="" />
+                  {col && <img src={`${col}.webp`} alt="" />}
                 </div>
               );
             }),
@@ -453,7 +453,7 @@ function App() {
         <div className="eaten">
           {eatenBlacks &&
             eatenBlacks.map((piece, pieceIndex) => (
-              <img key={pieceIndex} src={`${piece}.webp`} alt="" />
+              <img key={pieceIndex} src={`${piece}.webp`} />
             ))}
         </div>
       </div>
